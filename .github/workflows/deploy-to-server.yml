@@ -1,0 +1,76 @@
+name: Deploy CodForge website to server
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      FTP_HOST: ${{ secrets.FTP_HOST }}
+      FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+      FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+      FTP_TARGET_DIR: ${{ secrets.FTP_TARGET_DIR }}
+      FTP_PORT: ${{ secrets.FTP_PORT }}
+      SERVER_HOST: ${{ secrets.SERVER_HOST }}
+      SERVER_USER: ${{ secrets.SERVER_USER }}
+      SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+      SERVER_PATH: ${{ secrets.SERVER_PATH }}
+      SERVER_PORT: ${{ secrets.SERVER_PORT }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Choose deployment mode
+        run: |
+          if [ -n "$FTP_HOST" ]; then
+            test -n "$FTP_USERNAME" || (echo "Missing FTP_USERNAME secret" && exit 1)
+            test -n "$FTP_PASSWORD" || (echo "Missing FTP_PASSWORD secret" && exit 1)
+            test -n "$FTP_TARGET_DIR" || (echo "Missing FTP_TARGET_DIR secret" && exit 1)
+            echo "DEPLOY_MODE=ftp" >> "$GITHUB_ENV"
+            echo "FTP_PORT=${FTP_PORT:-21}" >> "$GITHUB_ENV"
+          else
+            test -n "$SERVER_HOST" || (echo "Missing SERVER_HOST secret or FTP_HOST secret" && exit 1)
+            test -n "$SERVER_USER" || (echo "Missing SERVER_USER secret" && exit 1)
+            test -n "$SERVER_SSH_KEY" || (echo "Missing SERVER_SSH_KEY secret" && exit 1)
+            test -n "$SERVER_PATH" || (echo "Missing SERVER_PATH secret" && exit 1)
+            echo "DEPLOY_MODE=ssh" >> "$GITHUB_ENV"
+            echo "SERVER_PORT=${SERVER_PORT:-22}" >> "$GITHUB_ENV"
+          fi
+
+      - name: Install SSH deployment tools
+        if: env.DEPLOY_MODE == 'ssh'
+        run: sudo apt-get update && sudo apt-get install -y rsync
+
+      - name: Install FTP deployment tools
+        if: env.DEPLOY_MODE == 'ftp'
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: Configure SSH
+        if: env.DEPLOY_MODE == 'ssh'
+        run: |
+          mkdir -p ~/.ssh
+          printf "%s
+" "$SERVER_SSH_KEY" > ~/.ssh/codforge_deploy_key
+          chmod 600 ~/.ssh/codforge_deploy_key
+          ssh-keyscan -p "$SERVER_PORT" -H "$SERVER_HOST" >> ~/.ssh/known_hosts
+
+      - name: Deploy website files with SSH
+        if: env.DEPLOY_MODE == 'ssh'
+        run: |
+          rsync -az --delete             --exclude ".git/"             --exclude ".github/"             --exclude "backend/"             --exclude "node_modules/"             --exclude ".env"             --exclude ".env.*"             -e "ssh -i ~/.ssh/codforge_deploy_key -p $SERVER_PORT"             ./ "$SERVER_USER@$SERVER_HOST:$SERVER_PATH/"
+
+      - name: Deploy website files with FTP
+        if: env.DEPLOY_MODE == 'ftp'
+        run: |
+          lftp -u "$FTP_USERNAME","$FTP_PASSWORD" -p "$FTP_PORT" "$FTP_HOST" <<FTP_COMMANDS
+          set ftp:ssl-allow no
+          set net:max-retries 2
+          set net:timeout 20
+          mkdir -p "$FTP_TARGET_DIR"
+          mirror --reverse --delete --verbose             --exclude-glob ".git/"             --exclude-glob ".github/"             --exclude-glob "backend/"             --exclude-glob "node_modules/"             --exclude-glob ".env"             --exclude-glob ".env.*"             ./ "$FTP_TARGET_DIR"
+          bye
+          FTP_COMMANDS

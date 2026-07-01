@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>Luma Market | Curated Online Shopping</title>
+  <link rel='preconnect' href='https://fonts.googleapis.com'>
+  <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+  <link href='https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap' rel='stylesheet'>
+  <link rel='stylesheet' href='style.css'>
+</head>
+<body>
+  <a class='skip-link' href='#shop'>Skip to products</a>
+  <header class='site-header' id='top'>
+    <nav class='nav-shell' aria-label='Primary navigation'>
+      <a class='brand' href='#top' aria-label='Luma Market home'><span class='brand-mark'>LM</span><span>Luma Market</span></a>
+      <button class='nav-toggle' id='navToggle' aria-label='Open menu' aria-expanded='false'><span></span><span></span></button>
+      <div class='nav-links' id='navLinks'>
+        <a href='#shop'>Shop</a>
+        <a href='#collections'>Collections</a>
+        <a href='#journal'>Journal</a>
+        <a href='#support'>Support</a>
+      </div>
+      <button class='cart-button' id='openCart' aria-label='Open shopping cart'>
+        <span>Cart</span><strong id='cartCount'>0</strong>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <section class='hero'>
+      <div class='hero-copy'>
+        <p class='eyebrow'>Spring edit now live</p>
+        <h1>Thoughtful goods for brighter everyday rituals.</h1>
+        <p class='hero-text'>Discover home objects, clean beauty, travel essentials, and studio-made accessories selected for lasting quality and quiet delight.</p>
+        <div class='hero-actions'>
+          <a class='btn primary' href='#shop'>Shop new arrivals</a>
+          <a class='btn ghost' href='#collections'>Explore collections</a>
+        </div>
+        <div class='hero-stats' aria-label='Store highlights'>
+          <span><strong>4.9/5</strong> customer rating</span>
+          <span><strong>48h</strong> dispatch</span>
+          <span><strong>2,400+</strong> happy orders</span>
+        </div>
+      </div>
+      <div class='hero-art' aria-hidden='true'>
+        <div class='orb orb-one'></div>
+        <div class='orb orb-two'></div>
+        <div class='product-scene scene-one'><span>Glow Set</span></div>
+        <div class='product-scene scene-two'><span>Linen Tote</span></div>
+        <div class='product-scene scene-three'><span>Ceramic Cup</span></div>
+      </div>
+    </section>
+
+    <section class='trust-strip' aria-label='Store benefits'>
+      <article><span>✦</span><strong>Carbon mindful delivery</strong><small>Consolidated shipping on every order.</small></article>
+      <article><span>↺</span><strong>30-day returns</strong><small>Simple returns on unused goods.</small></article>
+      <article><span>◇</span><strong>Independent makers</strong><small>Every item sourced from small studios.</small></article>
+    </section>
+
+    <section class='collections' id='collections'>
+      <div class='section-heading'>
+        <p class='eyebrow'>Curated paths</p>
+        <h2>Shop by mood, not by aisle.</h2>
+      </div>
+      <div class='collection-grid'>
+        <button class='collection-card' data-jump='Home'><span>Home Reset</span><small>Warm ceramics, soft textiles, calm corners</small></button>
+        <button class='collection-card' data-jump='Wellness'><span>Weekend Glow</span><small>Clean skincare and low-effort rituals</small></button>
+        <button class='collection-card' data-jump='Travel'><span>Carry Light</span><small>Smart pieces for city breaks and commutes</small></button>
+      </div>
+    </section>
+
+    <section class='shop-section' id='shop'>
+      <div class='shop-top'>
+        <div>
+          <p class='eyebrow'>The market</p>
+          <h2>Fresh arrivals</h2>
+        </div>
+        <div class='search-box'>
+          <label for='searchInput'>Search products</label>
+          <input id='searchInput' type='search' placeholder='Search ceramics, bags, skincare...'>
+        </div>
+      </div>
+
+      <div class='toolbar' aria-label='Product filters'>
+        <div class='filter-chips' id='categoryFilters'></div>
+        <select id='sortSelect' aria-label='Sort products'>
+          <option value='featured'>Featured</option>
+          <option value='priceLow'>Price: low to high</option>
+          <option value='priceHigh'>Price: high to low</option>
+          <option value='rating'>Top rated</option>
+        </select>
+      </div>
+
+      <div class='results-line'><span id='resultCount'></span><button id='clearFilters' class='link-button'>Clear filters</button></div>
+      <div class='product-grid' id='productGrid' aria-live='polite'></div>
+      <div class='empty-state' id='emptyState' hidden>
+        <div class='empty-icon'>⌕</div>
+        <h3>No matches found</h3>
+        <p>Try another search term or clear your filters to browse the full edit.</p>
+        <button class='btn primary' id='emptyReset'>Reset shopping view</button>
+      </div>
+    </section>
+
+    <section class='journal' id='journal'>
+      <div>
+        <p class='eyebrow'>From the journal</p>
+        <h2>How to build a beautiful everyday kit.</h2>
+      </div>
+      <p>Start with fewer, better things: a durable carryall, a grounding object for your desk, a tiny ritual for evening, and one texture that makes your home feel softer.</p>
+      <a class='btn ghost' href='#shop'>Shop the edit</a>
+    </section>
+
+    <section class='newsletter' id='support'>
+      <div>
+        <p class='eyebrow'>Member notes</p>
+        <h2>Get first access to limited studio drops.</h2>
+      </div>
+      <form id='newsletterForm' novalidate>
+        <label for='newsletterEmail'>Email address</label>
+        <div class='inline-form'>
+          <input id='newsletterEmail' type='email' placeholder='you@example.com' required>
+          <button class='btn primary' type='submit'>Join</button>
+        </div>
+        <p class='form-message' id='newsletterMessage'></p>
+      </form>
+    </section>
+  </main>
+
+  <aside class='cart-drawer' id='cartDrawer' aria-hidden='true' aria-label='Shopping cart'>
+    <div class='drawer-panel' role='dialog' aria-modal='true' aria-labelledby='cartTitle'>
+      <div class='drawer-head'>
+        <div><p class='eyebrow'>Your basket</p><h2 id='cartTitle'>Shopping cart</h2></div>
+        <button class='icon-button' id='closeCart' aria-label='Close cart'>×</button>
+      </div>
+      <div class='cart-items' id='cartItems'></div>
+      <div class='cart-empty' id='cartEmpty'>
+        <div class='empty-icon'>🛍</div>
+        <h3>Your cart is waiting</h3>
+        <p>Add a few favorites from the market and they will appear here.</p>
+      </div>
+      <div class='promo-row'>
+        <input id='promoInput' type='text' placeholder='Promo code'>
+        <button id='applyPromo'>Apply</button>
+      </div>
+      <p class='form-message' id='promoMessage'></p>
+      <div class='cart-summary'>
+        <span>Subtotal</span><strong id='cartSubtotal'>$0.00</strong>
+        <span>Shipping</span><strong id='cartShipping'>$0.00</strong>
+        <span>Discount</span><strong id='cartDiscount'>-$0.00</strong>
+        <span class='total'>Total</span><strong class='total' id='cartTotal'>$0.00</strong>
+      </div>
+      <button class='btn primary checkout-btn' id='checkoutBtn'>Checkout securely</button>
+    </div>
+  </aside>
+
+  <div class='modal-backdrop' id='checkoutModal' hidden>
+    <section class='checkout-modal' role='dialog' aria-modal='true' aria-labelledby='checkoutTitle'>
+      <button class='icon-button modal-close' id='closeCheckout' aria-label='Close checkout'>×</button>
+      <div id='checkoutFormWrap'>
+        <p class='eyebrow'>Secure checkout demo</p>
+        <h2 id='checkoutTitle'>Complete your order</h2>
+        <form id='checkoutForm' novalidate>
+          <div class='form-grid'>
+            <label>Full name<input name='name' required placeholder='Maya Chen'></label>
+            <label>Email<input name='email' type='email' required placeholder='maya@example.com'></label>
+            <label>Street address<input name='address' required placeholder='214 Market Street'></label>
+            <label>City<input name='city' required placeholder='Portland'></label>
+            <label>Postal code<input name='postal' required placeholder='97205'></label>
+            <label>Delivery speed<select name='delivery'><option>Standard delivery</option><option>Express delivery +$12</option></select></label>
+          </div>
+          <p class='checkout-note'>This prototype validates your details and creates an in-browser confirmation only. No payment is processed.</p>
+          <button class='btn primary' type='submit'>Place demo order</button>
+          <p class='form-message' id='checkoutMessage'></p>
+        </form>
+      </div>
+      <div class='success-state' id='successState' hidden>
+        <div class='success-badge'>✓</div>
+        <h2>Order reserved</h2>
+        <p id='successText'></p>
+        <button class='btn primary' id='continueShopping'>Continue shopping</button>
+      </div>
+    </section>
+  </div>
+
+  <div class='toast' id='toast' role='status' aria-live='polite'></div>
+  <script src='script.js'></script>
+</body>
+</html>

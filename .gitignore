@@ -1,0 +1,21 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Dependencies and generated output
+node_modules/
+dist/
+build/
+coverage/
+
+# Runtime data
+uploads/
+*.sqlite3
+*.db
+
+# Logs and local tooling
+*.log
+.DS_Store
+.vscode/
+.idea/
